@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  php-fpm:
+    build: php-fpm
+    ports:
+      - 9000:9000
+    volumes:
+      - ./src:/var/www/html/
+    restart: always
+    networks:
+      - backend
+
+
+  nginx:
+    build: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./src:/var/www/html/
+    restart: always       
+    links:
+      - php-fpm
+    networks:
+      - backend
+
+
+networks:
+  backend:
+    driver: bridge
